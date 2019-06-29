@@ -318,7 +318,7 @@ using namespace facebook::react;
 
   [surface _setStage:RCTSurfaceStagePrepared];
 
-  [_mountingManager scheduleTransaction:mountingCoordinator];
+  [_mountingManager scheduleTransaction:mountingCoordinator->pullTransaction()];
 }
 
 - (void)addObserver:(id<RCTSurfacePresenterObserver>)observer
@@ -397,6 +397,10 @@ using namespace facebook::react;
 
     [self _startAllSurfaces];
   }
+}
+
+- (RCTMountingManager *)briskMountingManager {
+    return _mountingManager;
 }
 
 @end

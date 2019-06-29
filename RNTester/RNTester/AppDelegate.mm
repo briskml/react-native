@@ -33,6 +33,9 @@
 #import "RNTesterTurboModuleProvider.h"
 #endif
 
+#import <React/RCTMountingManager.h>
+#import "BriskViewTransaction.h";
+
 #ifdef RN_TURBO_MODULE_ENABLED
 @interface AppDelegate() <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate>{
 #else
@@ -76,7 +79,13 @@
 #else
   UIView *rootView = [[RCTRootView alloc] initWithBridge:_bridge moduleName:@"RNTesterApp" initialProperties:initProps];
 #endif
-
+  
+//  auto __block sp = _surfacePresenter;
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//    auto transaction = createTransaction();
+//    [sp.briskMountingManager scheduleTransaction:transaction];
+//  });
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;

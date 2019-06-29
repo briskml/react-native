@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
                         config:(std::shared_ptr<const facebook::react::ReactNativeConfig>)config;
 
 @property (nonatomic, readonly) RCTComponentViewFactory *componentViewFactory;
+@property (nonatomic, readonly) RCTMountingManager *briskMountingManager;
 @property (nonatomic, readonly) facebook::react::ContextContainer::Shared contextContainer;
 
 @end

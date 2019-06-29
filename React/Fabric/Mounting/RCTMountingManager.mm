@@ -207,29 +207,28 @@ static void RNPerformMountInstructions(ShadowViewMutationList const &mutations, 
   return self;
 }
 
-- (void)scheduleTransaction:(MountingCoordinator::Shared const &)mountingCoordinator
+- (void)scheduleTransaction:(better::optional<MountingTransaction>)mountingTransaction
 {
   if (RCTIsMainQueue()) {
     // Already on the proper thread, so:
     // * No need to do a thread jump;
     // * No need to do expensive copy of all mutations;
     // * No need to allocate a block.
-    [self mountMutations:mountingCoordinator];
+    [self mountMutations:mountingTransaction];
     return;
   }
 
-  auto mountingCoordinatorCopy = mountingCoordinator;
+  auto mountingTransactionCopy = mountingTransaction;
   RCTExecuteOnMainQueue(^{
     RCTAssertMainQueue();
-    [self mountMutations:mountingCoordinatorCopy];
+    [self mountMutations:mountingTransactionCopy];
   });
 }
 
-- (void)mountMutations:(MountingCoordinator::Shared const &)mountingCoordinator
+- (void)mountMutations:(better::optional<MountingTransaction>)transaction
 {
   SystraceSection s("-[RCTMountingManager mountMutations:]");
 
-  auto transaction = mountingCoordinator->pullTransaction();
   if (!transaction.has_value()) {
     return;
   }

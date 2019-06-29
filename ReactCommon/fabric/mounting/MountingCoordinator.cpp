@@ -13,6 +13,8 @@
 
 #include <react/mounting/Differentiator.h>
 #include <react/mounting/ShadowViewMutation.h>
+#include <iostream>
+#include <fstream>
 
 namespace facebook {
 namespace react {
@@ -42,6 +44,8 @@ void MountingCoordinator::push(ShadowTreeRevision &&revision) const {
     lastRevision_ = std::move(revision);
   }
 }
+    
+std::ofstream logfilein("/Users/wczekalski/Desktop/log.txt");
 
 better::optional<MountingTransaction> MountingCoordinator::pullTransaction()
     const {
@@ -79,6 +83,14 @@ better::optional<MountingTransaction> MountingCoordinator::pullTransaction()
   auto telemetry = lastRevision_->getTelemetry();
   baseRevision_ = std::move(*lastRevision_);
   lastRevision_.reset();
+        
+        logfilein
+        << "Transaction: {\n"
+        << "  surfaceId: " << surfaceId_ << ",\n"
+        << "  number: " << number_ << ",\n"
+        << "  mutations:\n" << getDebugDescription(mutations,  { true, 2, INT_MAX}) << ",\n"
+        << "  telemetry: " << getDebugDescription(telemetry) << ",\n"
+        << "}\n";
 
   return MountingTransaction{
       surfaceId_, number_, std::move(mutations), telemetry};
